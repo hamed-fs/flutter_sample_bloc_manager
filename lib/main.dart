@@ -13,7 +13,6 @@ import 'package:flutter_sample_bloc_manager/pages/second_counter_page.dart';
 
 void main() {
   _registerBlocs();
-  EventDispatcher.instance.register();
 
   runApp(MyApp());
 }
@@ -26,6 +25,8 @@ void _registerBlocs() {
       () => first_bloc.FirstCounterBloc());
   BlocManager.instance.register<second_bloc.SecondCounterBloc>(
       () => second_bloc.SecondCounterBloc());
+
+  EventDispatcher.initialize();
 }
 
 class MyApp extends StatelessWidget {

@@ -10,9 +10,9 @@ class EventDispatcher {
 
   static final EventDispatcher _instance = EventDispatcher._internal();
 
-  static EventDispatcher get instance => _instance;
+  static EventDispatcher get initialize => _instance;
 
-  void register() {
+  void call() {
     BlocManager.instance.addListener<AuthBloc>(
       key: 'AuthBlocEventDispatcher',
       handler: (dynamic state) {

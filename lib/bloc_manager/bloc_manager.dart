@@ -21,28 +21,6 @@ abstract class BlocManagerContract {
   Future<void> dispose<T>();
 }
 
-class MockBlocManager extends BlocManagerContract {
-  @override
-  void register<T extends Bloc<dynamic, dynamic>>(Function predicate) {}
-
-  @override
-  T fetch<T extends Bloc<dynamic, dynamic>>() {
-    throw UnimplementedError();
-  }
-
-  @override
-  void addListener<T extends Bloc<dynamic, dynamic>>({
-    @required String key,
-    @required BlocManagerListenerHandler handler,
-  }) {}
-
-  @override
-  Future<void> removeListener<T>([String key]) async {}
-
-  @override
-  Future<void> dispose<T>() async {}
-}
-
 class BlocManager extends BlocManagerContract {
   factory BlocManager() => _instance;
 
@@ -84,13 +62,15 @@ class BlocManager extends BlocManagerContract {
       return;
     }
 
-    if (fetch<T>() == null) {
+    final T bloc = fetch<T>();
+
+    if (bloc == null) {
       throw BlocManagerException(
         message: _getCouldNotFindObjectErrorMessage(T),
       );
     }
 
-    _subscriptions[objectKey] = fetch<T>().listen(
+    _subscriptions[objectKey] = bloc.listen(
       (dynamic state) => handler(state),
     );
   }
