@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 
 import 'bloc_manager_exception.dart';
 
-
 typedef BlocManagerListenerHandler = void Function(dynamic state);
 
 abstract class BlocManagerContract {
@@ -58,6 +57,8 @@ class BlocManager extends BlocManagerContract {
       <dynamic, Bloc<dynamic, dynamic>>{};
   final Map<String, StreamSubscription<dynamic>> _subscriptions =
       <String, StreamSubscription<dynamic>>{};
+
+  Map<dynamic, Bloc<dynamic, dynamic>> get repository => _repository;
 
   @override
   void register<T extends Bloc<dynamic, dynamic>>(Function predicate) =>

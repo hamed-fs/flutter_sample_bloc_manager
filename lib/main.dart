@@ -1,78 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_sample_bloc_manager/bloc_manager/bloc_manager.dart';
+import 'package:flutter_sample_bloc_manager/bloc_manager/event_dispatcher.dart';
+import 'package:flutter_sample_bloc_manager/core_blocs/auth_bloc/auth_bloc.dart';
+import 'package:flutter_sample_bloc_manager/core_blocs/connectivity_bloc/connectivity_bloc.dart';
+import 'package:flutter_sample_bloc_manager/pages/first_counter_page.dart';
 import 'package:flutter_sample_bloc_manager/feature_blocs/first_counter_bloc/first_counter_bloc.dart'
     as first_bloc;
 import 'package:flutter_sample_bloc_manager/feature_blocs/second_counter_bloc/second_counter_bloc.dart'
     as second_bloc;
-
-import 'package:flutter_sample_bloc_manager/bloc_manager/bloc_manager.dart';
-
-import 'package:flutter_sample_bloc_manager/counter_page_0.dart';
-import 'package:flutter_sample_bloc_manager/counter_page_1.dart';
+import 'package:flutter_sample_bloc_manager/pages/second_counter_page.dart';
 
 void main() {
-  BlocManager.instance.register<first_bloc.FirstCounterBloc>(
-      () => first_bloc.FirstCounterBloc());
-  BlocManager.instance.register<second_bloc.SecondCounterBloc>(
-      () => second_bloc.SecondCounterBloc());
+  _registerBlocs();
+  EventDispatcher.instance.register();
 
   runApp(MyApp());
 }
 
+void _registerBlocs() {
+  BlocManager.instance.register<ConnectivityBloc>(() => ConnectivityBloc());
+  BlocManager.instance.register<AuthBloc>(() => AuthBloc());
+
+  BlocManager.instance.register<first_bloc.FirstCounterBloc>(
+      () => first_bloc.FirstCounterBloc());
+  BlocManager.instance.register<second_bloc.SecondCounterBloc>(
+      () => second_bloc.SecondCounterBloc());
+}
+
 class MyApp extends StatelessWidget {
-  final first_bloc.FirstCounterBloc _counter0 =
+  final ConnectivityBloc _connectivityBloc =
+      BlocManager.instance.fetch<ConnectivityBloc>();
+  final AuthBloc _authBloc = BlocManager.instance.fetch<AuthBloc>();
+
+  final first_bloc.FirstCounterBloc _firstCounterBloc =
       BlocManager.instance.fetch<first_bloc.FirstCounterBloc>();
-  final second_bloc.SecondCounterBloc _counter1 =
+  final second_bloc.SecondCounterBloc _secondCounterBloc =
       BlocManager.instance.fetch<second_bloc.SecondCounterBloc>();
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Demo Home Page'),
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Flutter Bloc Manager Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(32),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  RaisedButton(
-                    child: Text('Logout/Login'),
-                    onPressed: () {},
-                  ),
-                  RaisedButton(
-                    child: Text('Connect/Disconnect'),
-                    onPressed: () {},
-                  )
-                ],
+        home: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            title: Text('Flutter Bloc Manager Demo'),
+          ),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildAuthButton(),
+                    _buildConnectivityButton(),
+                  ],
+                ),
               ),
-            ),
-            BlocProvider(
-              create: (context) => _counter0,
-              child: CounterPage0(
-                onIncrement: () => _counter0.add(first_bloc.Increment()),
-                onDecrement: () => _counter0.add(first_bloc.Decrement()),
+              BlocProvider(
+                create: (context) => _firstCounterBloc,
+                child: FirstCounterPage(
+                  onIncrement: () =>
+                      _firstCounterBloc.add(first_bloc.Increment()),
+                  onDecrement: () =>
+                      _firstCounterBloc.add(first_bloc.Decrement()),
+                ),
               ),
-            ),
-            BlocProvider(
-              create: (context) => _counter1,
-              child: CounterPage1(
-                onIncrement: () => _counter1.add(second_bloc.Increment()),
-                onDecrement: () => _counter1.add(second_bloc.Decrement()),
+              BlocProvider(
+                create: (context) => _secondCounterBloc,
+                child: SecondCounterPage(
+                  onIncrement: () =>
+                      _secondCounterBloc.add(second_bloc.Increment()),
+                  onDecrement: () =>
+                      _secondCounterBloc.add(second_bloc.Decrement()),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
+
+  Widget _buildConnectivityButton() => OutlineButton(
+        child: BlocBuilder<ConnectivityBloc, ConnectivityState>(
+          cubit: _connectivityBloc,
+          builder: (context, state) => Text(
+            state is ConnectedState ? 'Disconnect' : 'Connect',
+          ),
+        ),
+        onPressed: () => _connectivityBloc.add(
+          _connectivityBloc.state is ConnectedState ? Disconnect() : Connect(),
+        ),
+      );
+
+  Widget _buildAuthButton() => OutlineButton(
+        child: BlocBuilder<AuthBloc, AuthState>(
+          cubit: _authBloc,
+          builder: (context, state) => Text(
+            state is LoginState ? 'Logout' : 'Login',
+          ),
+        ),
+        onPressed: () => _authBloc.add(
+          _authBloc.state is LoginState ? Logout() : Login(),
+        ),
+      );
 }

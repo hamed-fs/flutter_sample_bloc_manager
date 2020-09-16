@@ -2,8 +2,12 @@ part of 'first_counter_bloc.dart';
 
 abstract class FirstCounterState {
   final int value;
+  final bool isEnable;
 
-  FirstCounterState({this.value});
+  FirstCounterState({
+    this.value,
+    this.isEnable = true,
+  });
 }
 
 class InitialState extends FirstCounterState {
@@ -16,8 +20,16 @@ class SetCounter extends FirstCounterState {
   SetCounter(this.value) : super(value: value);
 }
 
+class EnabledState extends FirstCounterState {
+  final int value;
+
+  EnabledState(this.value) : super(value: value, isEnable: true);
+}
+
 class DisabledState extends FirstCounterState {
-  DisabledState() : super();
+  final int value;
+
+  DisabledState(this.value) : super(value: value, isEnable: false);
 }
 
 class LogoutState extends FirstCounterState {
