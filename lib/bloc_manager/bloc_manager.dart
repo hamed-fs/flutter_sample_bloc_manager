@@ -1,12 +1,21 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
+
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 
 import 'bloc_manager_exception.dart';
 
 typedef BlocManagerListenerHandler = void Function(dynamic state);
 
 abstract class BlocManagerContract {
+  final Map<dynamic, Function> _factories = <dynamic, Function>{};
+  final Map<dynamic, Bloc<dynamic, dynamic>> _repository =
+      <dynamic, Bloc<dynamic, dynamic>>{};
+  final Map<String, StreamSubscription<dynamic>> _subscriptions =
+      <String, StreamSubscription<dynamic>>{};
+
+  Map<dynamic, Bloc<dynamic, dynamic>> get repository => _repository;
+
   void register<T extends Bloc<dynamic, dynamic>>(Function predicate);
 
   T fetch<T extends Bloc<dynamic, dynamic>>();
@@ -17,6 +26,8 @@ abstract class BlocManagerContract {
   });
 
   Future<void> removeListener<T>([String key]);
+
+  bool hasListener<T>(String key);
 
   Future<void> dispose<T>();
 }
@@ -29,14 +40,6 @@ class BlocManager extends BlocManagerContract {
   static final BlocManager _instance = BlocManager._internal();
 
   static BlocManager get instance => _instance;
-
-  final Map<dynamic, Function> _factories = <dynamic, Function>{};
-  final Map<dynamic, Bloc<dynamic, dynamic>> _repository =
-      <dynamic, Bloc<dynamic, dynamic>>{};
-  final Map<String, StreamSubscription<dynamic>> _subscriptions =
-      <String, StreamSubscription<dynamic>>{};
-
-  Map<dynamic, Bloc<dynamic, dynamic>> get repository => _repository;
 
   @override
   void register<T extends Bloc<dynamic, dynamic>>(Function predicate) =>
@@ -100,6 +103,7 @@ class BlocManager extends BlocManagerContract {
     }
   }
 
+  @override
   bool hasListener<T>(String key) =>
       _subscriptions.containsKey(_getKey<T>(key));
 

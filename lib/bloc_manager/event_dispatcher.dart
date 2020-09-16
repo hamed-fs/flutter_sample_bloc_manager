@@ -7,9 +7,11 @@ const String authBlocListenerKey = 'AuthBlocListener';
 const String connectivityBlocListenerKey = 'ConnectivityBlocListener';
 
 class EventDispatcher {
+  static final BlocManagerContract blocManager = BlocManager.instance;
+
   static void initialize() {
-    if (!BlocManager.instance.hasListener<AuthBloc>(authBlocListenerKey)) {
-      BlocManager.instance.addListener<AuthBloc>(
+    if (!blocManager.hasListener<AuthBloc>(authBlocListenerKey)) {
+      blocManager.addListener<AuthBloc>(
         key: authBlocListenerKey,
         handler: (dynamic state) {
           if (state is LoginState) {
@@ -21,9 +23,9 @@ class EventDispatcher {
       );
     }
 
-    if (!BlocManager.instance
+    if (!blocManager
         .hasListener<ConnectivityBloc>(connectivityBlocListenerKey)) {
-      BlocManager.instance.addListener<ConnectivityBloc>(
+      blocManager.addListener<ConnectivityBloc>(
         key: connectivityBlocListenerKey,
         handler: (dynamic state) {
           if (state is ConnectedState) {
@@ -37,7 +39,7 @@ class EventDispatcher {
   }
 
   static void _dispatcher(DispatcherEvent event) {
-    BlocManager.instance.repository.forEach((key, value) {
+    blocManager.repository.forEach((key, value) {
       if (value is BaseBloc) {
         BaseBloc bloc = value as BaseBloc;
 
