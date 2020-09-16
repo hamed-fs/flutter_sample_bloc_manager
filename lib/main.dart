@@ -21,12 +21,12 @@ void _registerBlocs() {
   BlocManager.instance.register<ConnectivityBloc>(() => ConnectivityBloc());
   BlocManager.instance.register<AuthBloc>(() => AuthBloc());
 
+  EventDispatcher.initialize();
+
   BlocManager.instance.register<first_bloc.FirstCounterBloc>(
       () => first_bloc.FirstCounterBloc());
   BlocManager.instance.register<second_bloc.SecondCounterBloc>(
       () => second_bloc.SecondCounterBloc());
-
-  EventDispatcher.initialize();
 }
 
 class MyApp extends StatelessWidget {

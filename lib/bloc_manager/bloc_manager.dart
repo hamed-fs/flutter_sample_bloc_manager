@@ -56,7 +56,7 @@ class BlocManager extends BlocManagerContract {
     @required String key,
     @required BlocManagerListenerHandler handler,
   }) {
-    final String objectKey = _getKey(type: T, key: key);
+    final String objectKey = _getKey<T>(key);
 
     if (_subscriptions.containsKey(objectKey)) {
       return;
@@ -77,7 +77,7 @@ class BlocManager extends BlocManagerContract {
 
   @override
   Future<void> removeListener<T>([String key = '']) async {
-    final String objectKey = _getKey(type: T, key: key);
+    final String objectKey = _getKey<T>(key);
 
     _subscriptions.keys
         .where(
@@ -100,9 +100,12 @@ class BlocManager extends BlocManagerContract {
     }
   }
 
+  bool isSubscribed<T>(String key) =>
+      _subscriptions.containsKey(_getKey<T>(key));
+
   Bloc<dynamic, dynamic> _invoke<T>() => _repository[T] = _factories[T]();
 
-  static String _getKey({@required dynamic type, String key}) => '$type::$key';
+  static String _getKey<T>(String key) => '$T::$key';
 
   static String _getCouldNotFindObjectErrorMessage(dynamic type) =>
       'Could not find <$type> object, use register method to add it to bloc manager.';
