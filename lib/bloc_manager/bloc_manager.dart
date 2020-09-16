@@ -100,7 +100,7 @@ class BlocManager extends BlocManagerContract {
     }
   }
 
-  bool isSubscribed<T>(String key) =>
+  bool hasListener<T>(String key) =>
       _subscriptions.containsKey(_getKey<T>(key));
 
   Bloc<dynamic, dynamic> _invoke<T>() => _repository[T] = _factories[T]();

@@ -8,7 +8,7 @@ const String connectivityBlocListenerKey = 'ConnectivityBlocListener';
 
 class EventDispatcher {
   static void initialize() {
-    if (!BlocManager.instance.isSubscribed<AuthBloc>(authBlocListenerKey)) {
+    if (!BlocManager.instance.hasListener<AuthBloc>(authBlocListenerKey)) {
       BlocManager.instance.addListener<AuthBloc>(
         key: authBlocListenerKey,
         handler: (dynamic state) {
@@ -22,7 +22,7 @@ class EventDispatcher {
     }
 
     if (!BlocManager.instance
-        .isSubscribed<ConnectivityBloc>(connectivityBlocListenerKey)) {
+        .hasListener<ConnectivityBloc>(connectivityBlocListenerKey)) {
       BlocManager.instance.addListener<ConnectivityBloc>(
         key: connectivityBlocListenerKey,
         handler: (dynamic state) {
