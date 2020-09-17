@@ -3,68 +3,63 @@ import 'package:flutter_sample_bloc_manager/bloc_manager/bloc_manager.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/connectivity_bloc/connectivity_bloc.dart';
 
-const String authBlocListenerKey = 'AuthBlocListener';
-const String connectivityBlocListenerKey = 'ConnectivityBlocListener';
+part 'dispatcher_event.dart';
 
-class EventDispatcher {
-  static final BlocManagerContract blocManager = BlocManager.instance;
+class BlocDispatcher {
+  static final String authBlocListenerKey = 'AuthBlocListener';
+  static final String connectivityBlocListenerKey = 'ConnectivityBlocListener';
+
+  static final BlocManagerContract _blocManager = BlocManager.instance;
 
   static void initialize() {
-    if (!blocManager.hasListener<AuthBloc>(authBlocListenerKey)) {
-      blocManager.addListener<AuthBloc>(
+    if (!_blocManager.hasListener<AuthBloc>(authBlocListenerKey)) {
+      _blocManager.addListener<AuthBloc>(
         key: authBlocListenerKey,
         handler: (dynamic state) {
           if (state is LoginState) {
-            _dispatcher(DispatcherEvent.login);
+            _dispatcher(_DispatcherEvent.login);
           } else if (state is LogoutState) {
-            _dispatcher(DispatcherEvent.logout);
+            _dispatcher(_DispatcherEvent.logout);
           }
         },
       );
     }
 
-    if (!blocManager
+    if (!_blocManager
         .hasListener<ConnectivityBloc>(connectivityBlocListenerKey)) {
-      blocManager.addListener<ConnectivityBloc>(
+      _blocManager.addListener<ConnectivityBloc>(
         key: connectivityBlocListenerKey,
         handler: (dynamic state) {
           if (state is ConnectedState) {
-            _dispatcher(DispatcherEvent.enable);
+            _dispatcher(_DispatcherEvent.enable);
           } else if (state is DisconnectedState) {
-            _dispatcher(DispatcherEvent.disable);
+            _dispatcher(_DispatcherEvent.disable);
           }
         },
       );
     }
   }
 
-  static void _dispatcher(DispatcherEvent event) {
-    blocManager.repository.forEach((key, value) {
+  static void _dispatcher(_DispatcherEvent event) {
+    _blocManager.repository.forEach((key, value) {
       if (value is BaseBloc) {
         BaseBloc bloc = value as BaseBloc;
 
         switch (event) {
-          case DispatcherEvent.enable:
+          case _DispatcherEvent.enable:
             bloc.enable();
             break;
-          case DispatcherEvent.disable:
+          case _DispatcherEvent.disable:
             bloc.disable();
             break;
-          case DispatcherEvent.login:
+          case _DispatcherEvent.login:
             bloc.login();
             break;
-          case DispatcherEvent.logout:
+          case _DispatcherEvent.logout:
             bloc.logout();
             break;
         }
       }
     });
   }
-}
-
-enum DispatcherEvent {
-  enable,
-  disable,
-  login,
-  logout,
 }

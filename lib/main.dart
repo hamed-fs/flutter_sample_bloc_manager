@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sample_bloc_manager/bloc_manager/bloc_manager.dart';
-import 'package:flutter_sample_bloc_manager/bloc_manager/event_dispatcher.dart';
+import 'package:flutter_sample_bloc_manager/bloc_manager/bloc_dispatcher.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/connectivity_bloc/connectivity_bloc.dart';
 import 'package:flutter_sample_bloc_manager/pages/first_counter_page.dart';
@@ -21,7 +21,7 @@ void _registerBlocs() {
   BlocManager.instance.register<ConnectivityBloc>(() => ConnectivityBloc());
   BlocManager.instance.register<AuthBloc>(() => AuthBloc());
 
-  EventDispatcher.initialize();
+  BlocDispatcher.initialize();
 
   BlocManager.instance.register<first_bloc.FirstCounterBloc>(
       () => first_bloc.FirstCounterBloc());
