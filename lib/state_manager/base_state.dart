@@ -1,4 +1,4 @@
-abstract class BaseBloc {
+abstract class BaseState {
   void enable();
 
   void disable();

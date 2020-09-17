@@ -1,4 +1,4 @@
-part of 'bloc_dispatcher.dart';
+part of 'state_dispatcher.dart';
 
 enum _DispatcherEvent {
   enable,

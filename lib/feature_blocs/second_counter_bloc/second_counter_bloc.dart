@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter_sample_bloc_manager/bloc_manager/base_bloc.dart';
+import 'package:flutter_sample_bloc_manager/state_manager/base_state.dart';
 
 part 'second_counter_event.dart';
 part 'second_counter_state.dart';
 
 class SecondCounterBloc extends Bloc<SecondCounterEvent, SecondCounterState>
-    implements BaseBloc {
+    implements BaseState {
   SecondCounterBloc() : super(LogoutState());
 
   @override

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sample_bloc_manager/bloc_manager/bloc_manager.dart';
-import 'package:flutter_sample_bloc_manager/bloc_manager/bloc_dispatcher.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/connectivity_bloc/connectivity_bloc.dart';
-import 'package:flutter_sample_bloc_manager/pages/first_counter_page.dart';
 import 'package:flutter_sample_bloc_manager/feature_blocs/first_counter_bloc/first_counter_bloc.dart'
     as first_bloc;
 import 'package:flutter_sample_bloc_manager/feature_blocs/second_counter_bloc/second_counter_bloc.dart'
     as second_bloc;
+import 'package:flutter_sample_bloc_manager/pages/first_counter_page.dart';
 import 'package:flutter_sample_bloc_manager/pages/second_counter_page.dart';
+import 'package:flutter_sample_bloc_manager/state_manager/state_dispatcher.dart';
+import 'package:flutter_sample_bloc_manager/state_manager/state_manager.dart';
 
 void main() {
   _registerBlocs();
@@ -18,26 +18,26 @@ void main() {
 }
 
 void _registerBlocs() {
-  BlocManager.instance.register<ConnectivityBloc>(() => ConnectivityBloc());
-  BlocManager.instance.register<AuthBloc>(() => AuthBloc());
+  StateManager.instance.register<ConnectivityBloc>(() => ConnectivityBloc());
+  StateManager.instance.register<AuthBloc>(() => AuthBloc());
 
-  BlocDispatcher.initialize();
+  StateDispatcher.initialize();
 
-  BlocManager.instance.register<first_bloc.FirstCounterBloc>(
+  StateManager.instance.register<first_bloc.FirstCounterBloc>(
       () => first_bloc.FirstCounterBloc());
-  BlocManager.instance.register<second_bloc.SecondCounterBloc>(
+  StateManager.instance.register<second_bloc.SecondCounterBloc>(
       () => second_bloc.SecondCounterBloc());
 }
 
 class MyApp extends StatelessWidget {
   final ConnectivityBloc _connectivityBloc =
-      BlocManager.instance.fetch<ConnectivityBloc>();
-  final AuthBloc _authBloc = BlocManager.instance.fetch<AuthBloc>();
+      StateManager.instance.fetch<ConnectivityBloc>();
+  final AuthBloc _authBloc = StateManager.instance.fetch<AuthBloc>();
 
   final first_bloc.FirstCounterBloc _firstCounterBloc =
-      BlocManager.instance.fetch<first_bloc.FirstCounterBloc>();
+      StateManager.instance.fetch<first_bloc.FirstCounterBloc>();
   final second_bloc.SecondCounterBloc _secondCounterBloc =
-      BlocManager.instance.fetch<second_bloc.SecondCounterBloc>();
+      StateManager.instance.fetch<second_bloc.SecondCounterBloc>();
 
   @override
   Widget build(BuildContext context) => MaterialApp(

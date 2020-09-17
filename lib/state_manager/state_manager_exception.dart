@@ -1,5 +1,5 @@
-class BlocManagerException implements Exception {
-  BlocManagerException({
+class StateManagerException implements Exception {
+  StateManagerException({
     this.message,
   });
 
