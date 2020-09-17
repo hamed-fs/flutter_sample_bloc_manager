@@ -1,3 +1,4 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_sample_bloc_manager/core_blocs/connectivity_bloc/connectivity_bloc.dart';
 
@@ -8,8 +9,8 @@ import 'state_manager_contract.dart';
 part 'dispatcher_event.dart';
 
 class StateDispatcher {
-  static final String authBlocListenerKey = 'AuthBlocListener';
-  static final String connectivityBlocListenerKey = 'ConnectivityBlocListener';
+  static const String authBlocListenerKey = 'AuthBlocListener';
+  static const String connectivityBlocListenerKey = 'ConnectivityBlocListener';
 
   static final StateManagerContract _stateManager = StateManager.instance;
 
@@ -43,9 +44,10 @@ class StateDispatcher {
   }
 
   static void _dispatcher(_DispatcherEvent event) {
-    _stateManager.repository.forEach((key, value) {
+    _stateManager.repository.forEach((dynamic key, Cubit<dynamic> value) {
       if (value is BaseState) {
-        BaseState state = value as BaseState;
+        // ignore: avoid_as
+        final BaseState state = value as BaseState;
 
         switch (event) {
           case _DispatcherEvent.enable:

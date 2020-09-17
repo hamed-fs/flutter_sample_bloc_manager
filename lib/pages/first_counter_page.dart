@@ -15,24 +15,23 @@ class FirstCounterPage extends StatelessWidget {
   final Function onDecrement;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
+  Widget build(BuildContext context) => Card(
+        child: Padding(
           padding: const EdgeInsets.all(16),
           child: BlocBuilder<FirstCounterBloc, FirstCounterState>(
-            builder: (context, state) {
+            builder: (BuildContext context, FirstCounterState state) {
               if (state is! LogoutState) {
                 return _buildLoggedIn(state);
               }
 
               return _buildLogout();
             },
-          )),
-    );
-  }
+          ),
+        ),
+      );
 
   Widget _buildLoggedIn(FirstCounterState state) => Column(
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
@@ -48,16 +47,16 @@ class FirstCounterPage extends StatelessWidget {
             padding: const EdgeInsets.all(4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 OutlineButton(
-                  child: Text(
+                  child: const Text(
                     '+',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: onIncrement,
                 ),
                 OutlineButton(
-                  child: Text(
+                  child: const Text(
                     '-',
                     style: TextStyle(fontSize: 20),
                   ),
@@ -69,9 +68,9 @@ class FirstCounterPage extends StatelessWidget {
         ],
       );
 
-  Widget _buildLogout() => Center(
+  Widget _buildLogout() => const Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Text(
             'LOGGED OUT',
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),

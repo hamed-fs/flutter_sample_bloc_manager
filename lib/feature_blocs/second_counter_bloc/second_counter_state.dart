@@ -1,13 +1,13 @@
 part of 'second_counter_bloc.dart';
 
 abstract class SecondCounterState {
-  final int value;
-  final bool isEnable;
-
   SecondCounterState({
     this.value,
     this.isEnable = true,
   });
+
+  final int value;
+  final bool isEnable;
 }
 
 class InitialState extends SecondCounterState {
@@ -15,21 +15,15 @@ class InitialState extends SecondCounterState {
 }
 
 class SetCounter extends SecondCounterState {
-  int value;
-
-  SetCounter(this.value) : super(value: value);
+  SetCounter(int value) : super(value: value);
 }
 
 class EnabledState extends SecondCounterState {
-  final int value;
-
-  EnabledState(this.value) : super(value: value, isEnable: true);
+  EnabledState(int value) : super(value: value, isEnable: true);
 }
 
 class DisabledState extends SecondCounterState {
-  final int value;
-
-  DisabledState(this.value) : super(value: value, isEnable: false);
+  DisabledState(int value) : super(value: value, isEnable: false);
 }
 
 class LogoutState extends SecondCounterState {

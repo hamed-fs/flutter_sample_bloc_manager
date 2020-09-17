@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import 'state_manager_exception.dart';
 import 'state_manager_contract.dart';
+import 'state_manager_exception.dart';
 
 class StateManager extends StateManagerContract {
   factory StateManager() => _instance;

@@ -49,22 +49,22 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
           appBar: AppBar(
             elevation: 0,
-            title: Text('Flutter Bloc Manager Demo'),
+            title: const Text('Flutter Bloc Manager Demo'),
           ),
           body: Column(
-            children: [
+            children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(32),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
+                  children: <Widget>[
                     _buildAuthButton(),
                     _buildConnectivityButton(),
                   ],
                 ),
               ),
-              BlocProvider(
-                create: (context) => _firstCounterBloc,
+              BlocProvider<first_bloc.FirstCounterBloc>(
+                create: (BuildContext context) => _firstCounterBloc,
                 child: FirstCounterPage(
                   onIncrement: () =>
                       _firstCounterBloc.add(first_bloc.Increment()),
@@ -72,8 +72,8 @@ class MyApp extends StatelessWidget {
                       _firstCounterBloc.add(first_bloc.Decrement()),
                 ),
               ),
-              BlocProvider(
-                create: (context) => _secondCounterBloc,
+              BlocProvider<second_bloc.SecondCounterBloc>(
+                create: (BuildContext context) => _secondCounterBloc,
                 child: SecondCounterPage(
                   onIncrement: () =>
                       _secondCounterBloc.add(second_bloc.Increment()),
@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
   Widget _buildConnectivityButton() => OutlineButton(
         child: BlocBuilder<ConnectivityBloc, ConnectivityState>(
           cubit: _connectivityBloc,
-          builder: (context, state) => Text(
+          builder: (BuildContext context, ConnectivityState state) => Text(
             state is ConnectedState ? 'Disconnect' : 'Connect',
           ),
         ),
@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
   Widget _buildAuthButton() => OutlineButton(
         child: BlocBuilder<AuthBloc, AuthState>(
           cubit: _authBloc,
-          builder: (context, state) => Text(
+          builder: (BuildContext context, AuthState state) => Text(
             state is LoginState ? 'Logout' : 'Login',
           ),
         ),

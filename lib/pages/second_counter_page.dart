@@ -15,24 +15,23 @@ class SecondCounterPage extends StatelessWidget {
   final Function onDecrement;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
+  Widget build(BuildContext context) => Card(
+        child: Padding(
           padding: const EdgeInsets.all(16),
           child: BlocBuilder<SecondCounterBloc, SecondCounterState>(
-            builder: (context, state) {
+            builder: (BuildContext context, SecondCounterState state) {
               if (state is! LogoutState) {
                 return _buildLoggedIn(state);
               }
 
               return _buildLogout();
             },
-          )),
-    );
-  }
+          ),
+        ),
+      );
 
   Widget _buildLoggedIn(SecondCounterState state) => Column(
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
@@ -48,16 +47,16 @@ class SecondCounterPage extends StatelessWidget {
             padding: const EdgeInsets.all(4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 OutlineButton(
-                  child: Text(
+                  child: const Text(
                     '+',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: onIncrement,
                 ),
                 OutlineButton(
-                  child: Text(
+                  child: const Text(
                     '-',
                     style: TextStyle(fontSize: 20),
                   ),
@@ -69,9 +68,9 @@ class SecondCounterPage extends StatelessWidget {
         ],
       );
 
-  Widget _buildLogout() => Center(
+  Widget _buildLogout() => const Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Text(
             'LOGGED OUT',
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
