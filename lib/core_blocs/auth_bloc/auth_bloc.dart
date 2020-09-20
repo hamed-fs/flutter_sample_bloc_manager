@@ -6,11 +6,11 @@ import 'package:meta/meta.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
+class AuthBloc extends Bloc<AuthEvent, AuthorizeState> {
   AuthBloc() : super(LogoutState());
 
   @override
-  Stream<AuthState> mapEventToState(
+  Stream<AuthorizeState> mapEventToState(
     AuthEvent event,
   ) async* {
     yield event is Login ? LoginState() : LogoutState();

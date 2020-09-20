@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter_sample_bloc_manager/state_manager/base_state.dart';
+import 'package:flutter_sample_bloc_manager/state_manager/state_listener_contracts/auth_state_listener.dart';
+import 'package:flutter_sample_bloc_manager/state_manager/state_listener_contracts/connectivity_state_listener.dart';
 
 part 'second_counter_event.dart';
 part 'second_counter_state.dart';
 
 class SecondCounterBloc extends Bloc<SecondCounterEvent, SecondCounterState>
-    implements BaseState {
+    implements AuthStateListener, ConnectivityStateListener {
   SecondCounterBloc() : super(LogoutState());
 
   @override
@@ -30,18 +31,14 @@ class SecondCounterBloc extends Bloc<SecondCounterEvent, SecondCounterState>
   }
 
   @override
-  void enable() {
-    add(Enable());
-  }
+  void onLogin() => add(Login());
 
   @override
-  void disable() {
-    add(Disable());
-  }
+  void onLogout() => add(Logout());
 
   @override
-  void login() => add(Login());
+  void onConnect() => add(Enable());
 
   @override
-  void logout() => add(Logout());
+  void onDisconnect() => add(Disable());
 }

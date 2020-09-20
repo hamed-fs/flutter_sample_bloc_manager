@@ -1,18 +1,19 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import 'exceptions/state_manager_exception.dart';
 import 'state_manager_contract.dart';
-import 'state_manager_exception.dart';
 
+/// State manager class
+///
+/// This class implements [StateManagerContract] interface
 class StateManager extends StateManagerContract {
-  factory StateManager() => _instance;
-
   StateManager._internal();
 
   static final StateManager _instance = StateManager._internal();
 
+  /// Returns state manager instance
   static StateManager get instance => _instance;
 
   final Map<dynamic, Function> _factories = <dynamic, Function>{};
@@ -89,7 +90,7 @@ class StateManager extends StateManagerContract {
   bool hasListener<T>(String key) =>
       _subscriptions.containsKey(_getKey<T>(key));
 
-  Bloc<dynamic, dynamic> _invoke<T>() => _repository[T] = _factories[T]();
+  Cubit<dynamic> _invoke<T>() => _repository[T] = _factories[T]();
 
   static String _getKey<T>(String key) => '$T::$key';
 

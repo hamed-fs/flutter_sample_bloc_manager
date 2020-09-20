@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter_sample_bloc_manager/state_manager/base_state.dart';
+import 'package:flutter_sample_bloc_manager/state_manager/state_listener_contracts/auth_state_listener.dart';
 
 part 'first_counter_event.dart';
 part 'first_counter_state.dart';
 
 class FirstCounterBloc extends Bloc<FirstCounterEvent, FirstCounterState>
-    implements BaseState {
+    implements AuthStateListener {
   FirstCounterBloc() : super(LogoutState());
 
   @override
@@ -30,18 +30,8 @@ class FirstCounterBloc extends Bloc<FirstCounterEvent, FirstCounterState>
   }
 
   @override
-  void enable() {
-    add(Enable());
-  }
+  void onLogin() => add(Login());
 
   @override
-  void disable() {
-    add(Disable());
-  }
-
-  @override
-  void login() => add(Login());
-
-  @override
-  void logout() => add(Logout());
+  void onLogout() => add(Logout());
 }

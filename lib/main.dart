@@ -8,7 +8,7 @@ import 'package:flutter_sample_bloc_manager/feature_blocs/second_counter_bloc/se
     as second_bloc;
 import 'package:flutter_sample_bloc_manager/pages/first_counter_page.dart';
 import 'package:flutter_sample_bloc_manager/pages/second_counter_page.dart';
-import 'package:flutter_sample_bloc_manager/state_manager/state_dispatcher.dart';
+import 'package:flutter_sample_bloc_manager/state_manager/event_dispatcher.dart';
 import 'package:flutter_sample_bloc_manager/state_manager/state_manager.dart';
 
 void main() {
@@ -21,7 +21,7 @@ void _registerBlocs() {
   StateManager.instance.register<ConnectivityBloc>(() => ConnectivityBloc());
   StateManager.instance.register<AuthBloc>(() => AuthBloc());
 
-  StateDispatcher.initialize();
+  EventDispatcher(StateManager.instance).initialize();
 
   StateManager.instance.register<first_bloc.FirstCounterBloc>(
       () => first_bloc.FirstCounterBloc());
@@ -99,9 +99,9 @@ class MyApp extends StatelessWidget {
       );
 
   Widget _buildAuthButton() => OutlineButton(
-        child: BlocBuilder<AuthBloc, AuthState>(
+        child: BlocBuilder<AuthBloc, AuthorizeState>(
           cubit: _authBloc,
-          builder: (BuildContext context, AuthState state) => Text(
+          builder: (BuildContext context, AuthorizeState state) => Text(
             state is LoginState ? 'Logout' : 'Login',
           ),
         ),

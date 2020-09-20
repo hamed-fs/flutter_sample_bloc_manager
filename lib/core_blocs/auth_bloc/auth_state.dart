@@ -1,8 +1,8 @@
 part of 'auth_bloc.dart';
 
 @immutable
-abstract class AuthState {}
+abstract class AuthorizeState {}
 
-class LoginState extends AuthState {}
+class LoginState extends AuthorizeState {}
 
-class LogoutState extends AuthState {}
+class LogoutState extends AuthorizeState {}
